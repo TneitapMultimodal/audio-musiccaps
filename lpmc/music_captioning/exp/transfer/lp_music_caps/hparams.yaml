@@ -12,7 +12,7 @@ lr: 0.0001
 min_lr: 1.0e-09
 rank: 0
 dist_url: tcp://localhost:12312
-dist_backend: nccl
+dist_backend: gloo # gloo for win; nccl for linux
 seed: null
 gpu: 1
 print_freq: 10

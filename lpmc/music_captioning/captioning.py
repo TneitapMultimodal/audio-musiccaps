@@ -24,7 +24,7 @@ parser.add_argument("--caption_type", default="lp_music_caps", type=str)
 parser.add_argument("--max_length", default=128, type=int)
 parser.add_argument("--num_beams", default=5, type=int)
 parser.add_argument("--model_type", default="last", type=str)
-parser.add_argument("--audio_path", default="../../dataset/samples/orchestra.wav", type=str)
+parser.add_argument("--audio_path", default="gBR_sBM_cXX_dXX_mBR0_chXX.wav", type=str)
 
 def get_audio(audio_path, duration=10, target_sr=16000):
     n_samples = int(duration * target_sr)
@@ -54,13 +54,14 @@ def captioning(args):
     config = OmegaConf.load(os.path.join(save_dir, "hparams.yaml"))
     model = BartCaptionModel(max_length = config.max_length)
     model, save_epoch = load_pretrained(args, save_dir, model, mdp=config.multiprocessing_distributed)
-    torch.cuda.set_device(args.gpu)
-    model = model.cuda(args.gpu)
+    # torch.cuda.set_device(args.gpu)
+    # model = model.cuda(args.gpu)
     model.eval()
     
     audio_tensor = get_audio(audio_path = args.audio_path)
     if args.gpu is not None:
-        audio_tensor = audio_tensor.cuda(args.gpu, non_blocking=True)
+        audio_tensor = audio_tensor.cuda()
+        # audio_tensor = audio_tensor.cuda(args.gpu, non_blocking=True)
 
     with torch.no_grad():
         output = model.generate(

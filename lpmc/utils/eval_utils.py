@@ -24,7 +24,7 @@ def load_pretrained(args, save_dir, model, model_types="last", mdp=False):
                 state_dict[k[len("module."):]] = state_dict[k]
             del state_dict[k]
     model.load_state_dict(state_dict)
-    torch.cuda.set_device(args.gpu)
-    model = model.cuda(args.gpu)
+    # torch.cuda.set_device(args.gpu)
+    model = model.cuda() # args.gpu
     model.eval()
     return model, save_epoch
